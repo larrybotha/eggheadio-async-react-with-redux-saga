@@ -3,7 +3,7 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 
 import api from '../api';
 
-import * as TYPES from '../types';
+import * as actions from '../actions';
 
 // fetch person receives the action that initiated that initiates it.
 // fetchStarWarsRequest above will eventually result in fetchPerson being executed
@@ -20,6 +20,7 @@ function* fetchPerson(action) {
     // This makes asynchronous requests, like fetching data from an API,
     // synchronous
     yield put({type: TYPES.FETCH_STAR_WARS_SUCCESS, data: person.results});
+    yield put({type: actions.FETCH_STAR_WARS_SUCCESS, data: person.results});
   } catch (e) {
     console.log(e);
   }
@@ -33,5 +34,5 @@ export function* fetchPersonSaga() {
   // type is dispatched, then takeLatest will cancel the previous call to
   // fetchPerson and execute again. This ensures that only the latest function
   // runs at any given time.
-  yield takeLatest(TYPES.FETCH_STAR_WARS_REQUEST, fetchPerson);
+  yield takeLatest(actions.FETCH_STAR_WARS_REQUEST, fetchPerson);
 }

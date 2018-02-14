@@ -1,5 +1,11 @@
-import * as TYPES from '../types';
-
+export const FETCH_STAR_WARS_REQUEST = 'FETCH_STAR_WARS_REQUEST';
 export const fetchStarWarsRequest = () => ({
-  type: TYPES.FETCH_STAR_WARS_REQUEST,
+  type: FETCH_STAR_WARS_REQUEST,
+});
+
+export const FETCH_STAR_WARS_SUCCESS = 'FETCH_STAR_WARS_SUCCESS';
+
+export const CONFIRMATION = 'CONFIRMATION';
+export const confirmFetchStarWars = () => ({
+  type: CONFIRMATION,
 });

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import './App.css'
+import './App.css';
 
 class App extends Component {
   render() {
@@ -8,11 +8,9 @@ class App extends Component {
       <div>
         <h1>Redux Saga</h1>
         <div>
-          {
-            this.props.starWars.people.map(
-              (person, i) => <h4 key={i}>{person.name}</h4>
-            )
-          }
+          {this.props.starWars.people.map((person, i) => (
+            <h4 key={i}>{person.name}</h4>
+          ))}
         </div>
         <button onClick={this.props.fetchStarWarsRequest}>Load More</button>
       </div>

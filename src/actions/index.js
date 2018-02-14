@@ -1,5 +1,5 @@
-import * as TYPES from '../types'
+import * as TYPES from '../types';
 
 export const fetchStarWarsRequest = () => ({
-    type: TYPES.FETCH_STAR_WARS_REQUEST
-})
+  type: TYPES.FETCH_STAR_WARS_REQUEST,
+});

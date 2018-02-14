@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import * as TYPES from '../types';
+import * as actions from '../actions';
 
 const initialState = {
   uiState: 'idle',
@@ -23,8 +23,8 @@ const handleStarWarsFetchSuccess = (state, action) => {
 
 const starWars = (state = initialState, action) => {
   const handlers = {
-    [TYPES.FETCH_STAR_WARS_SUCCESS]: handleStarWarsFetchSuccess,
-    [TYPES.FETCH_STAR_WARS_REQUEST]: handleStarWarsFetchRequest,
+    [actions.FETCH_STAR_WARS_SUCCESS]: handleStarWarsFetchSuccess,
+    [actions.FETCH_STAR_WARS_REQUEST]: handleStarWarsFetchRequest,
   };
   return handlers[action.type] ? handlers[action.type](state, action) : state;
 };

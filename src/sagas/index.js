@@ -1,66 +1,64 @@
-// call and put are known as effects in redux-saga
-import {call, put, takeLatest, take,
-  // race, all
+import {
+  call,
+  put,
+  takeLatest,
+  take,
+  // non-blocking-effects
+  select,
+  throttle,
+  fork,
+  spawn,
+  cancel,
 } from 'redux-saga/effects';
 
 import api from '../api';
 
 import * as actions from '../actions';
 
-// fetch person receives the action that initiated that initiates it.
-// fetchStarWarsRequest above will eventually result in fetchPerson being executed
-// when we add a watcher to fetchStarWarsRequest
+function* handleInput(input) {}
+
+export function* watchInput() {
+  // throttle works in the same way as _.throttle
+  // It takes a timeout, the type of the action to watch for, and the generator
+  // to execute when that type is dispatched
+  yield throttle(500, 'INPUT_CHANGE', handleInput);
+}
+
 function* fetchPerson(action) {
   try {
-    // we can block a request by using take, and only continuing when another
-    // action is dispatched with the correct type
-    console.log('entered fetchPerson')
-    yield take(actions.CONFIRMATION);
-    console.log('after confirm');
+    // fork works in the same way as call
+    // It calls a function, spreading the remaining parameters into that function,
+    // but instead of blocking any further execution, allows execution to continue
+    // Handy when you need to send a request, but don't need to wait for the
+    // returned data
+    // Despite it being non-blocking, the containing generator will not return
+    // until all forks have been resolved
+    yield fork(api, '/breeds/list/all');
 
-    // race is a blocking effect that will return whichever endpoint responds first
-    // It will clean up any effects that are still pending
-    // const {normal, custom} = yield race({
-    //   normal: call(api, '/people'),
-    //   custom: call(api, '/people/justForTyler')
-    // })
+    // spawn is similar to fork, but it creates a detached task. This means that
+    // the generator will not wait for spawn tasks to resolve before returning
+    const dogs = yield spawn(api, '/breeds/list/all');
 
-    // all is a hybrid effect - it can be blocking or non-blocking. This is
-    // determined by the effects it contains. In this case, because we are using
-    // call inside of all, it is a blocking effect
-    // if all is blocking, it waits for all calls to return a response
-    // const {normal, custom} = yield all({
-    //   normal: call(api, '/people'),
-    //   custom: call(api, '/people/justForTyler')
-    // })
+    // get a piece of state in a non-blocking manner
+    const selector = yield select(state => state.starWars);
 
-    // api is a function which will be called with the remaining
-    // parameters spread onto it
-    // call is blocking, because we don't want anything else to happend until we
-    // get a result.
     const person = yield call(api, '/people');
 
-    // put takes an action creator
-    // put works in the same way as redux's dispatch - it dispatches actions
-    // put will only be executed once call returns a result - call is blocking
-    // This makes asynchronous requests, like fetching data from an API,
-    // synchronous
-    // put is non-blocking, because at this point don't need to wait for anything
-    // before dispatching an action - we have our data, and we want our store
-    // updated
     yield put({type: actions.FETCH_STAR_WARS_SUCCESS, data: person.results});
+
+    // we can cancel requests by listening for an action being dispatched, and
+    // cancelling
+    // In the above scenario, if both 'call' and 'put' have been executed, a user
+    // may 'cancel' the dogs request
+    // This is useful when someone is logging in, and then instantly attempts to
+    // log out.
+    yield take('CANCELLED');
+    yield cancel(dogs);
   } catch (e) {
     console.log(e);
   }
 }
 
-// the watcher connects our fetch function to the store
 export function* fetchPersonSaga() {
-  // it watches for FETCH_STAR_WARS_REQUEST being dispatched, and then calls
-  // fetchPerson, which then receives the data sent through when dispatched
-  // takeLatest is what's doing the listening here. If another action of the same
-  // type is dispatched, then takeLatest will cancel the previous call to
-  // fetchPerson and execute again. This ensures that only the latest function
-  // runs at any given time.
   yield takeLatest(actions.FETCH_STAR_WARS_REQUEST, fetchPerson);
 }

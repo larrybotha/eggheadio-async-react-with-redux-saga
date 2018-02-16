@@ -9,7 +9,4 @@ export const fetchStarWarsSuccess = data => ({
   data,
 });
 
-export const QUEUE_CHANNEL_REQUESTS = 'QUEUE_CHANNEL_REQUESTS';
-export const queueChannelRequests = () => ({
-  type: QUEUE_CHANNEL_REQUESTS,
-});
+export const STOP_BACKGROUND_FETCH = 'STOP_BACKGROUND_FETCH';

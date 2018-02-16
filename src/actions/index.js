@@ -8,3 +8,5 @@ export const fetchStarWarsSuccess = data => ({
   type: FETCH_STAR_WARS_SUCCESS,
   data,
 });
+
+export const STOP_BACKGROUND_FETCH = 'STOP_BACKGROUND_FETCH';

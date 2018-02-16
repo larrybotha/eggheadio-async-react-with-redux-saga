@@ -4,22 +4,12 @@ export const fetchStarWarsRequest = () => ({
 });
 
 export const FETCH_STAR_WARS_SUCCESS = 'FETCH_STAR_WARS_SUCCESS';
-
-export const CONFIRMATION = 'CONFIRMATION';
-export const confirmFetchStarWars = () => ({
-  type: CONFIRMATION,
+export const fetchStarWarsSuccess = data => ({
+  type: FETCH_STAR_WARS_SUCCESS,
+  data,
 });
 
-export const FETCH_STAR_WARS_PLANETS_REQUEST =
-  'FETCH_STAR_WARS_PLANETS_REQUEST';
-export const starWarsPlanetsRequest = () => {
-  return {
-    type: FETCH_STAR_WARS_PLANETS_REQUEST,
-  };
-};
-
-export const FETCH_STAR_WARS_PLANETS_SUCCESS =
-  'FETCH_STAR_WARS_PLANETS_SUCCESS';
-export const starWarsPlanetsSuccess = () => ({
-  type: FETCH_STAR_WARS_PLANETS_SUCCESS,
+export const QUEUE_CHANNEL_REQUESTS = 'QUEUE_CHANNEL_REQUESTS';
+export const queueChannelRequests = () => ({
+  type: QUEUE_CHANNEL_REQUESTS,
 });

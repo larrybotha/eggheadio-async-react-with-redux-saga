@@ -6,30 +6,29 @@ import './App.css';
 import * as actions from '../actions';
 
 class App extends Component {
+  state = {count: 0};
+
+  handleQueue = () => {
+    this.props.queueChannelRequests();
+    this.setState(({count}) => ({count: count + 1}));
+  };
+
   render() {
-    const {fetchStarWarsRequest, starWarsPlanetsRequest, starWars} = this.props;
+    const {count} = this.state;
+    const {fetchStarWarsRequest, starWars} = this.props;
     const loading = starWars.uiState !== 'idle';
 
     return (
       <div>
         <h1>Redux Saga</h1>
-        <div>
-          {starWars.people.map((person, i) => <h4 key={i}>{person.name}</h4>)}
-        </div>
+        <h3># of Button Clicks {count}</h3>
+        <h3># of Saga effects {starWars.people}</h3>
 
         <button onClick={fetchStarWarsRequest}>
           {loading ? 'loading...' : 'people'}
         </button>
 
-        <hr />
-
-        <div>
-          {starWars.planets.map((planet, i) => <h4 key={i}>{planet.name}</h4>)}
-        </div>
-
-        <button onClick={starWarsPlanetsRequest}>
-          {loading ? 'loading...' : 'planets'}
-        </button>
+        <button onClick={this.handleQueue}>Queue channel</button>
       </div>
     );
   }

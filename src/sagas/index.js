@@ -4,11 +4,11 @@ import api from '../api';
 
 import * as actions from '../actions';
 
-function* fetchPerson(action) {
+export function* fetchPerson(action) {
   try {
     const person = yield call(api, '/people');
 
-    yield put(actions.fetchStarWarsSuccess(person.results));
+    yield put(actions.fetchStarWarsSuccess({results: person.results}));
   } catch (e) {
     console.log(e);
   }
